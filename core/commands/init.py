@@ -1,4 +1,4 @@
-from core.command import Command
+from core.commands.command import Command
 
 
 class Init(Command):
