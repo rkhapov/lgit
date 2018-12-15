@@ -1,25 +1,13 @@
 import sys
 
-from core.selector import build_command_by_name
-from core.ft.builder import *
-
 
 def main(argv):
-    # if len(argv) < 2:
-    #     print('Invalid parameters')
-    #     return
-    #
-    # name = argv[1]
-    # args = argv[2:]
-    #
-    # command = build_command_by_name(name)
-    #
-    # if command is None:
-    #     print('Unknown command')
-    #     return
-    #
-    # command.execute(args)
-    pass
+    if len(argv) < 2:
+        print('Invalid parameters')
+        return
+
+    name = argv[1]
+    args = argv[2:]
 
 
 if __name__ == '__main__':

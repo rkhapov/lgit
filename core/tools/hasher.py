@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 import hashlib
 
-from core.ft.node import Node, File, Directory
-
 
 def get_bytes_hash(bytes_):
     return hashlib.sha256(bytes_).hexdigest()

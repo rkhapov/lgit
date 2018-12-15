@@ -31,32 +31,10 @@ class About:
         return self.__creation_time
 
 
-class Diffs:
-    def __init__(self, files_to_store_name, created_dirs, deleted_dirs):
-        self.__created_dirs = created_dirs
-        self.__deleted_dirs = deleted_dirs
-        self.__files_to_storage_name = files_to_store_name
-
-    @property
-    def created_dirs(self):
-        return self.__created_dirs
-
-    @property
-    def deleted_dirs(self):
-        return self.__deleted_dirs
-
-    @property
-    def files_to_path(self):
-        return self.__files_to_storage_name
-
-    def get_file_storage_name(self, path):
-        return self.__files_to_storage_name[path]
-
-
 class Commit:
-    def __init__(self, about: About, id_, parent_id, diffs: Diffs):
+    def __init__(self, about: About, id_, parent_id, file_to_storage_name):
         self.__about = about
-        self.__diffs = diffs
+        self.__file_to_storage_name = file_to_storage_name
         self.__id = id_
         self.__parent_id = parent_id
 
@@ -69,9 +47,8 @@ class Commit:
         return self.__about
 
     @property
-    def diffs(self):
-        return self.__diffs
-
-    @property
     def id(self):
         return self.__id
+
+    def get_file_storage_name(self, file):
+        return self.__file_to_storage_name[file]
