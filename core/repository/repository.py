@@ -6,7 +6,7 @@ from core.repository.objects.commit import About, Author, Commit
 from core.repository.objects.provider import Provider
 from core.repository.path import Path
 from core.paths import *
-from core.repository.storage import Storage
+from core.repository.storagecontroller import StorageController
 
 
 def initialize_repository_at(path: Path):
@@ -18,7 +18,7 @@ def initialize_repository_at(path: Path):
     path.mkdir(STORAGE_PATH)
 
     provider = Provider(path)
-    commit = Commit(About(Author('N\\A', 'N\\A'), datetime.datetime.now(), 'initialize commit'), 0, -1, {})
+    commit = Commit(About(Author('N\\A', 'N\\A'), datetime.datetime.now(), 'lgit auto initialization commit'), 0, -1, {})
     master = Branch('master', 0)
     provider.save_new(commit)
     provider.save_new(master)
@@ -36,7 +36,7 @@ class Repository:
     def __init__(self, path: Path):
         self.__path = path
         self.__provider = Provider(path)
-        self.__storage = Storage(path)
+        self.__storage = StorageController(path)
 
     @property
     def path(self):

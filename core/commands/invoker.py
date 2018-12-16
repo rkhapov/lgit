@@ -1,6 +1,7 @@
 from typing import Dict
 
 from core.commands.add import Add
+from core.commands.checkout import Checkout
 from core.commands.command import Command
 from core.commands.commit import Commit
 from core.commands.init import Init
@@ -14,7 +15,8 @@ class Invoker:
         'init': Init,
         'commit': Commit,
         'add': Add,
-        'show': Show
+        'show': Show,
+        'checkout': Checkout
     }
 
     def __init__(self, path: Path):

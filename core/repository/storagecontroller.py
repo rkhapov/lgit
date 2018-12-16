@@ -5,7 +5,7 @@ from core.paths import STORAGE_PATH
 from core.repository.path import Path
 
 
-class Storage:
+class StorageController:
     def __init__(self, repository_path: Path):
         self.__repository_path = repository_path
         self.__storage_path = repository_path.sub(STORAGE_PATH)
