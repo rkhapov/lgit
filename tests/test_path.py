@@ -14,7 +14,7 @@ class PathUnitTests(unittest.TestCase):
     def test_path__should_return_root_path(self):
         path = Path("root")
 
-        sut = path.path
+        sut = path.root
 
         self.assertEquals(sut, "root")
 
@@ -23,4 +23,4 @@ class PathUnitTests(unittest.TestCase):
 
         sut = path.sub("subdir")
 
-        self.assertEquals(sut.path, "root/soos/subdir")
+        self.assertEquals(sut.root, "root/soos/subdir")

@@ -1,11 +1,8 @@
 import shutil
-from os.path import join
 import uuid
 
+from core.paths import STORAGE_PATH
 from core.repository.path import Path
-
-
-STORAGE_PATH = join('.lgit', 'storage')
 
 
 class Storage:

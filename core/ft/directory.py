@@ -55,7 +55,7 @@ class Directory:
 
         def visitor(ch):
             nonlocal result
-            result += ch.path + os.linesep
+            result += ch.root + os.linesep
 
         self.traverse_tree(visitor)
 

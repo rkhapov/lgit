@@ -1,3 +1,6 @@
+import os
+
+
 class Author:
     def __init__(self, name, email):
         self.__name = name
@@ -10,6 +13,10 @@ class Author:
     @property
     def email(self):
         return self.__email
+
+    @property
+    def description_string(self):
+        return f'Author: name - {self.name}, email - {self.email}'
 
 
 class About:
@@ -29,6 +36,13 @@ class About:
     @property
     def creation_time(self):
         return self.__creation_time
+
+    @property
+    def description_string(self):
+        author = self.__author.description_string
+        time = str(self.__creation_time)
+
+        return f'{self.comment}{os.linesep}{author}{os.linesep}{time}'
 
 
 class Commit:
@@ -52,3 +66,7 @@ class Commit:
 
     def get_file_storage_name(self, file):
         return self.__file_to_storage_name[file]
+
+    @property
+    def description_string(self):
+        return f'Id - {self.id}, parent - {self.parent_id}{os.linesep}{self.about.description_string}'
