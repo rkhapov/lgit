@@ -1,11 +1,11 @@
 import datetime
 import shutil
 
+from core.paths import *
 from core.repository.objects.branch import Branch
 from core.repository.objects.commit import About, Author, Commit
 from core.repository.objects.provider import Provider
 from core.repository.path import Path
-from core.paths import *
 from core.repository.storagecontroller import StorageController
 
 
@@ -45,3 +45,7 @@ class Repository:
     @property
     def provider(self):
         return self.__provider
+
+    @property
+    def storage_controller(self):
+        return self.__storage

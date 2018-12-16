@@ -64,8 +64,15 @@ class Commit:
     def id(self):
         return self.__id
 
+    def contains_file(self, file):
+        return file in self.__file_to_storage_name
+
     def get_file_storage_name(self, file):
         return self.__file_to_storage_name[file]
+
+    @property
+    def file_to_storage_name(self):
+        return self.__file_to_storage_name
 
     @property
     def description_string(self):

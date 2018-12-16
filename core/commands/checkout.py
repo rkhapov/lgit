@@ -1,6 +1,7 @@
 import argparse
 
 from core.commands.command import Command
+from core.repository.objects.branch import Tag
 from core.repository.objects.provider import Provider
 from core.repository.path import Path
 from core.repository.repository import contains_repository_at
@@ -24,6 +25,10 @@ class Checkout(Command):
 
         if not provider.is_branch(name):
             print(f'Repository doesnt have branch \'{name}\'')
+            return
+
+        if isinstance(provider.get_branch(name), Tag):
+            print('Cant checkout to tag')
             return
 
         provider.set_current_branch(name)

@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
-from ..ft.directory import *
+import enum
 from abc import abstractmethod
+
+from core.repository.objects.commit import Commit
+from core.repository.path import Path
+from core.repository.repository import Repository
+from core.repository.storagecontroller import StorageController
+from ..ft.directory import *
 
 
 def _generate_two_dims_arr(val, n, m):
@@ -150,7 +156,36 @@ class Replace(EditAction):
         return f'Replacing at {position} from {orig} to {sub}'
 
 
+class State(enum.Enum):
+    NEW = 1,
+    DELETED = 2,
+    MODIFIED = 3,
+    NOT_CHANGED = 4
+
+
 class Differ:
+    def get_changes_from_commit(self, commit: Commit, storage: StorageController, path: Path):
+        file_to_status = {}
+        current_files = path.get_all_files(ignore_config_dir=True)
+
+        for file in current_files:
+            if not commit.contains_file(file):
+                file_to_status[file] = State.NEW
+                continue
+
+            id_ = commit.get_file_storage_name(file)
+
+            if self.is_file_differs(file, storage.get_path_of(id_)):
+                file_to_status[file] = State.MODIFIED
+            else:
+                file_to_status[file] = State.NOT_CHANGED
+
+        for cf in commit.file_to_storage_name.keys():
+            if cf not in current_files:
+                file_to_status[cf] = State.DELETED
+
+        return file_to_status
+
     def has_difference(self, bytes1, bytes2):
         if len(bytes1) != len(bytes2):
             return True
@@ -180,13 +215,13 @@ class Differ:
                 p2 = file2.read(size_per_read)
 
                 if len(p1) != len(p2):
-                    return False
-
-                if len(p1) == 0:
                     return True
 
-                if self.has_difference(p1, p2):
+                if len(p1) == 0:
                     return False
+
+                if self.has_difference(p1, p2):
+                    return True
 
     def get_byte_diff(self, source, destination, cmp=lambda a, b: a == b):
         m = len(source)

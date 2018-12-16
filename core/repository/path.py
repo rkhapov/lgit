@@ -1,6 +1,8 @@
 from os.path import join, isfile, isdir, dirname, normpath
 from os import makedirs, listdir
 
+from core.paths import CONFIG_DIR
+
 
 class Path:
     def __init__(self, root):
@@ -37,16 +39,34 @@ class Path:
     def exists(self, path):
         return self.isfile(path) or self.isdir(path)
 
-    def listdir(self, path):
+    def listdir(self, path, full_paths=True):
         list_ = []
 
         for f in listdir(self.combine(path)):
-            list_.append(join(self.combine(path), f))
+            if full_paths:
+                list_.append(join(self.combine(path), f))
+            else:
+                list_.append(f)
 
         return list_
 
     def mkdir(self, path):
-        try:
-            makedirs(join(self.__root, path))
-        except FileExistsError:
-            pass
+        makedirs(join(self.__root, path), exist_ok=True)
+
+    def get_all_files(self, path='.', ignore_config_dir=False):
+        result = set()
+
+        self._get_all_files(path, result, ignore_config_dir)
+
+        return result
+
+    def _get_all_files(self, path, result, ignore_config_dir):
+        if ignore_config_dir and self.combine(path).startswith(self.combine(CONFIG_DIR)):
+            return
+
+        if self.isfile(path):
+            result.add(path)
+
+        if self.isdir(path):
+            for f in self.listdir(path):
+                self._get_all_files(f, result, ignore_config_dir)
