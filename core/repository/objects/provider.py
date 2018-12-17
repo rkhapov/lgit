@@ -30,6 +30,9 @@ class CommitProvider:
     def is_commit(self, id_):
         return self.__path.isfile(str(id_)) and str(id_).isnumeric()
 
+    def get_next_commit_id(self):
+        return max(list(map(int, filter(lambda x: x.isnumeric(), self.__path.listdir('.', full_paths=False))))) + 1
+
 
 class BranchProvider:
     def __init__(self, path: Path):
@@ -95,3 +98,6 @@ class Provider:
             name = file.readline().strip()
 
         return self.__branch_provider.load(name)
+
+    def get_next_commit_id(self):
+        return self.__commit_provider.get_next_commit_id()

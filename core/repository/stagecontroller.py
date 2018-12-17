@@ -21,8 +21,8 @@ class StageController:
 
         if self.__repo_path.isfile(path):
             if report:
-                print(f'Added to stage: {path}')
-            self.__files_at_stage.add(path)
+                print(f'Added to stage: {self.__repo_path.combine(path)}')
+            self.__files_at_stage.add(self.__repo_path.combine(path))
 
         if self.__repo_path.isdir(path):
             for f in self.__repo_path.listdir(path):
@@ -38,6 +38,16 @@ class StageController:
 
     def get_staged_files(self):
         return self.__files_at_stage
+
+    def remove(self, file):
+        if self.contains(file):
+            self.__files_at_stage.remove(file)
+
+    def clear(self):
+        self.__files_at_stage.clear()
+
+    def is_empty(self):
+        return len(self.__files_at_stage) == 0
 
     def _read_files_at_stage(self):
         if not self.__repo_path.isfile(STAGE_FILE):
