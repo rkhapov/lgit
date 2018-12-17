@@ -4,7 +4,10 @@ from core.commands.command import Command
 from core.repository.objects.branch import Tag
 from core.repository.objects.provider import Provider
 from core.repository.path import Path
+from core.repository.performer import Performer
 from core.repository.repository import contains_repository_at
+from core.repository.stagecontroller import StageController
+from core.repository.storagecontroller import StorageController
 
 
 def _parse_args(args):
@@ -31,5 +34,16 @@ class Checkout(Command):
             print('Cant checkout to tag')
             return
 
+        if provider.get_current_branch().name == name:
+            print(f'Already at {name}')
+            return
+
         provider.set_current_branch(name)
         print(f'Current branch for repository was switched to \'{name}\'')
+
+        performer = Performer(path, StorageController(path))
+        performer.perform_commit(provider.get_current_commit())
+
+        stage = StageController(path)
+        stage.clear()
+        stage.write()

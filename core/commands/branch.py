@@ -4,7 +4,9 @@ from core.commands.command import Command
 from core.repository.objects.provider import Provider
 from core.repository.objects.branch import Branch as br
 from core.repository.path import Path
+from core.repository.performer import Performer
 from core.repository.repository import contains_repository_at
+from core.repository.storagecontroller import StorageController
 
 
 def _parse_args(args):
@@ -32,13 +34,13 @@ def _create_branch(name, provider):
 
     provider.save_new(branch)
 
-    print(f'Created new branch {name} at {commit}')
+    print(f'Create new branch {name} at {commit}')
 
 
 def _move_branch(name, new_id, provider):
     if not provider.is_branch(name):
         branch = br(name, 0)
-        print(f'Created new branch {name}')
+        print(f'Create new branch {name}')
     else:
         branch = provider.get_branch(name)
 
@@ -70,4 +72,11 @@ class Branch(Command):
         if id_ is None:
             _create_branch(name, provider)
         else:
+            if not provider.is_commit(id_):
+                print(f'No that commit: {id_}')
+                return
+
             _move_branch(name, id_, provider)
+
+            performer = Performer(path, StorageController(path))
+            performer.perform_commit(provider.get_commit(id_))

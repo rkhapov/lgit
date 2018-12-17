@@ -1,4 +1,6 @@
-from os.path import join, isfile, isdir, dirname, normpath
+import os
+import shutil
+from os.path import join, isfile, isdir, dirname, normpath, relpath
 from os import makedirs, listdir
 
 from core.paths import CONFIG_DIR
@@ -50,6 +52,18 @@ class Path:
 
         return list_
 
+    def remove(self, path):
+        self.remove_file(path)
+        self.remove_dir(path)
+
+    def remove_file(self, path):
+        if self.isfile(path):
+            os.remove(self.combine(path))
+
+    def remove_dir(self, path):
+        if self.isdir(path):
+            shutil.rmtree(self.combine(path), ignore_errors=True)
+
     def mkdir(self, path):
         makedirs(join(self.__root, path), exist_ok=True)
 
@@ -59,6 +73,9 @@ class Path:
         self._get_all_files(path, result, ignore_config_dir)
 
         return result
+
+    def relpath(self, path):
+        return normpath(relpath(path, self.__root))
 
     def _get_all_files(self, path, result, ignore_config_dir):
         if ignore_config_dir and self.combine(path).startswith(self.combine(CONFIG_DIR)):

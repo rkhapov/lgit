@@ -101,3 +101,6 @@ class Provider:
 
     def get_next_commit_id(self):
         return self.__commit_provider.get_next_commit_id()
+
+    def get_current_commit(self):
+        return self.get_commit(self.get_current_branch().commit_id)
