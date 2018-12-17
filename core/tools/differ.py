@@ -196,7 +196,7 @@ class Differ:
 
         return False
 
-    def get_file_tree_diff(self, source: Directory, destination: Directory):
+    def get_file_tree_diff(self, source, destination):
         if source.name != destination.name or source.path != destination.path:
             raise ValueError('cant compare different directories')
 
