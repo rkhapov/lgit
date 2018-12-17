@@ -1,6 +1,7 @@
 from typing import Dict
 
 from core.commands.add import Add
+from core.commands.branch import Branch
 from core.commands.checkout import Checkout
 from core.commands.command import Command
 from core.commands.commit import Commit
@@ -17,7 +18,8 @@ class Invoker:
         'add': Add,
         'show': Show,
         'checkout': Checkout,
-        'status': Status
+        'status': Status,
+        'branch': Branch
     }
 
     def __init__(self, path: Path):
