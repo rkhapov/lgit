@@ -7,7 +7,7 @@ from core.repository.repository import contains_repository_at
 
 
 def _parse_args(args):
-    parser = argparse.ArgumentParser(description='Show branch commits', prog='lgit.py show')
+    parser = argparse.ArgumentParser(description='Show branch commits', prog='lgit show')
     parser.add_argument('--branch', type=str, default='', help='branch to show')
 
     return parser.parse_args(args)

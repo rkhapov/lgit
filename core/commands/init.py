@@ -5,7 +5,7 @@ from core.repository.repository import initialize_repository_at, contains_reposi
 
 
 def _parse_args(args):
-    parser = argparse.ArgumentParser(description='initializing repository', prog='lgit.py init')
+    parser = argparse.ArgumentParser(description='initializing repository', prog='lgit init')
     parser.add_argument('--strict', action='store_true',
                         help='strictly initialize empty repository (in case directory already contains repo)')
 

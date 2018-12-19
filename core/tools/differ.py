@@ -4,9 +4,7 @@ from abc import abstractmethod
 
 from core.repository.objects.commit import Commit
 from core.repository.path import Path
-from core.repository.repository import Repository
 from core.repository.storagecontroller import StorageController
-from ..ft.directory import *
 
 
 def _generate_two_dims_arr(val, n, m):

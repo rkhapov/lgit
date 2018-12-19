@@ -11,7 +11,7 @@ from core.repository.storagecontroller import StorageController
 
 
 def _parse_args(args):
-    parser = argparse.ArgumentParser(description='Checkout to branch', prog='lgit.py checkout')
+    parser = argparse.ArgumentParser(description='Checkout to branch', prog='lgit checkout')
     parser.add_argument('name')
 
     return parser.parse_args(args).name

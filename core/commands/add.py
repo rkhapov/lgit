@@ -7,7 +7,7 @@ from core.repository.stagecontroller import StageController
 
 
 def _parse_args(args):
-    parse = argparse.ArgumentParser(description='Add files to stage', prog='lgit.py add')
+    parse = argparse.ArgumentParser(description='Add files to stage', prog='lgit add')
     parse.add_argument('file', nargs='+', help='files or directories for pushing to stage')
 
     return parse.parse_args(args)

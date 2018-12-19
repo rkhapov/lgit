@@ -10,7 +10,7 @@ from core.repository.storagecontroller import StorageController
 
 
 def _parse_args(args):
-    parser = argparse.ArgumentParser(description="Branches control of repository", usage='lgit.py branch')
+    parser = argparse.ArgumentParser(description="Branches control of repository", usage='lgit branch')
     parser.add_argument('name', help='branch name', nargs='?')
     parser.add_argument('--id', help='id of commit to make branch refer to')
     parser.add_argument('--all', help='show all branches', action='store_true')

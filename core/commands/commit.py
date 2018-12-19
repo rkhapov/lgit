@@ -12,7 +12,7 @@ from core.tools.differ import Differ, State
 
 
 def _parse_about(args):
-    parser = argparse.ArgumentParser(description='Commit stage', prog='lgit.py commit')
+    parser = argparse.ArgumentParser(description='Commit stage', prog='lgit commit')
     parser.add_argument('-c', '--comment', type=str, help='Commentary to the commit', required=True)
     parser.add_argument('-n', '--name', type=str, help='Name of author', required=True)
     parser.add_argument('-e', '--email', type=str, help='Email of author', required=True)
