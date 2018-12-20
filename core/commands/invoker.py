@@ -7,6 +7,7 @@ from core.commands.command import Command
 from core.commands.commit import Commit
 from core.commands.diff import Diff
 from core.commands.init import Init
+from core.commands.rewrite import Rewrite
 from core.commands.show import Show
 from core.commands.status import Status
 from core.repository.path import Path
@@ -21,7 +22,9 @@ class Invoker:
         'checkout': Checkout,
         'status': Status,
         'branch': Branch,
-        'diff': Diff
+        'diff': Diff,
+        'rewrite': Rewrite
+
     }
 
     def __init__(self, path: Path):

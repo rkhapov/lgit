@@ -64,6 +64,15 @@ class Commit:
     def id(self):
         return self.__id
 
+    def set_author_name(self, name):
+        self.__about = About(Author(name, self.about.author.email), self.about.creation_time, self.about.comment)
+
+    def set_author_email(self, email):
+        self.__about = About(Author(self.about.author.name, email), self.__about.creation_time, self.about.comment)
+
+    def set_comment(self, comment):
+        self.__about = About(Author(self.about.author.name, self.about.author.email), self.__about.creation_time, comment)
+
     def contains_file(self, file):
         return file in self.__file_to_storage_name
 
