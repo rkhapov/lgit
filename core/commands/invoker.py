@@ -5,6 +5,7 @@ from core.commands.branch import Branch
 from core.commands.checkout import Checkout
 from core.commands.command import Command
 from core.commands.commit import Commit
+from core.commands.diff import Diff
 from core.commands.init import Init
 from core.commands.show import Show
 from core.commands.status import Status
@@ -19,7 +20,8 @@ class Invoker:
         'show': Show,
         'checkout': Checkout,
         'status': Status,
-        'branch': Branch
+        'branch': Branch,
+        'diff': Diff
     }
 
     def __init__(self, path: Path):

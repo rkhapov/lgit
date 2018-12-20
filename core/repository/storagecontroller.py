@@ -57,6 +57,10 @@ class StorageController:
 
         return bytes_
 
+    def read_lines_of(self, id_):
+        with open(self.__storage_path.combine(id_), 'r') as file:
+            return file.readlines()
+
     def get_file_of(self, id_, mode='rb'):
         path = self.__storage_path.combine(id_)
 

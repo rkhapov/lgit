@@ -16,7 +16,7 @@ class Status(Command):
         branch = repo.provider.get_current_branch()
         current_commit = repo.provider.get_commit(branch.commit_id)
         differ = Differ()
-        
+
         print(f'Repository at branch: {branch.name}')
         file_to_status = differ.get_changes_from_commit(current_commit, repo.storage_controller, repo.path)
 

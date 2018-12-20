@@ -161,6 +161,34 @@ class State(enum.Enum):
     NOT_CHANGED = 4
 
 
+class FileDiff:
+    def __init__(self, name, diffs, state):
+        self.__name = name
+        self.__diffs = diffs
+        self.__state = state
+
+    @property
+    def state(self):
+        return self.__state
+
+    @property
+    def name(self):
+        return self.__name
+
+    @property
+    def diffs(self):
+        return self.__diffs
+
+    def print(self):
+        if self.state != State.MODIFIED:
+            return
+
+        print(f'Changes of {self.name}:')
+
+        for act in sorted(self.diffs, key=lambda a: a.position):
+            print(act)
+
+
 class Differ:
     def get_changes_from_commit(self, commit: Commit, storage: StorageController, path: Path):
         file_to_status = {}
@@ -183,6 +211,23 @@ class Differ:
                 file_to_status[cf] = State.DELETED
 
         return file_to_status
+
+    def get_commit_diffs(self, src: Commit, dst: Commit, storage: StorageController):
+        src_files = set(src.file_to_storage_name.keys())
+        dst_files = set(dst.file_to_storage_name.keys())
+
+        fdiffs = []
+
+        for f in src_files.intersection(dst_files):
+            diffs = self.get_diff(storage.read_lines_of(src.get_file_storage_name(f)),
+                                  storage.read_lines_of(dst.get_file_storage_name(f)))
+
+            fdiffs.append(FileDiff(f, diffs, State.NOT_CHANGED if len(diffs) == 0 else State.MODIFIED))
+
+        fdiffs.extend([FileDiff(f, [], State.DELETED) for f in src_files.difference(dst_files)])
+        fdiffs.extend([FileDiff(f, [], State.NEW) for f in dst_files.difference(src_files)])
+
+        return fdiffs
 
     def has_difference(self, bytes1, bytes2):
         if len(bytes1) != len(bytes2):
@@ -221,7 +266,7 @@ class Differ:
                 if self.has_difference(p1, p2):
                     return True
 
-    def get_byte_diff(self, source, destination, cmp=lambda a, b: a == b):
+    def get_diff(self, source, destination, cmp=lambda a, b: a == b):
         m = len(source)
         n = len(destination)
 
