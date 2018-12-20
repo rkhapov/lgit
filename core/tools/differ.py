@@ -70,7 +70,10 @@ class Delete(EditAction):
         position = self.__position
         element = self.__element
 
-        return f'Deleting \'{element}\' at {position}'
+        if isinstance(element, str):
+            element = element.replace('\n', '')
+
+        return f'{position}: - "{element}"'
 
     def __eq__(self, other):
         if not other:
@@ -103,7 +106,10 @@ class Insert(EditAction):
         position = self.__position
         element = self.__element
 
-        return f'Inserting \'{element}\' at {position}'
+        if isinstance(element, str):
+            element = element.replace('\n', '')
+
+        return f'{position}: + "{element}"'
 
     def __eq__(self, other):
         if not other:
@@ -151,7 +157,11 @@ class Replace(EditAction):
         orig = self.__original
         sub = self.__substitute
 
-        return f'Replacing at {position} from {orig} to {sub}'
+        if isinstance(orig, str):
+            orig = orig.replace('\n', '')
+            sub = sub.replace('\n', '')
+
+        return f'{position}: "{orig}" -> "{sub}"'
 
 
 class State(enum.Enum):
@@ -180,10 +190,8 @@ class FileDiff:
         return self.__diffs
 
     def print(self):
-        if self.state != State.MODIFIED:
+        if self.state != State.MODIFIED and self.state != State.NEW:
             return
-
-        print(f'Changes of {self.name}:')
 
         for act in sorted(self.diffs, key=lambda a: a.position):
             print(act)
@@ -225,7 +233,10 @@ class Differ:
             fdiffs.append(FileDiff(f, diffs, State.NOT_CHANGED if len(diffs) == 0 else State.MODIFIED))
 
         fdiffs.extend([FileDiff(f, [], State.DELETED) for f in src_files.difference(dst_files)])
-        fdiffs.extend([FileDiff(f, [], State.NEW) for f in dst_files.difference(src_files)])
+        fdiffs.extend(
+            [FileDiff(f,
+                      self.get_diff([], storage.read_lines_of(dst.get_file_storage_name(f))),
+                      State.NEW) for f in dst_files.difference(src_files)])
 
         return fdiffs
 
